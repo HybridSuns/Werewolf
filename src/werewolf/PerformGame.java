@@ -12,7 +12,7 @@ public class PerformGame extends JFrame {
 		Player[] players = new Player[number + 1];
 		for (int i = 1; i < number + 1; i++) {
 			players[i] = new Player(i, true, "Citizen");
-			System.out.printf("第%d 玩家加入\n", i);
+			System.out.printf("第%d玩家加入,他是%s\n",players[i].getNumber() ,players[i].getJob());
 		}
 
 		// 分配职业面板
@@ -82,11 +82,15 @@ public class PerformGame extends JFrame {
 		});
 
 		// 分配猎人
+		
+		StringBuilder citizens = new StringBuilder("普通村民是：");
+		
 		pJob.add(new JLabel("猎人号码："));
 		JTextField jtfHunterPlayer = new JTextField(8);
 		pJob.add(jtfHunterPlayer);
 		JButton jbtAddHunter = new JButton("分配猎人");
 		pJob.add(jbtAddHunter);
+		JLabel jlciti=new JLabel(citizens.toString());
 		jbtAddHunter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] str = jtfHunterPlayer.getText().split(",");
@@ -94,17 +98,30 @@ public class PerformGame extends JFrame {
 					players[Integer.parseInt(s)].setJob("Hunter");
 					System.out.println(s + "号玩家是猎人");
 				}
+				// 分配村民
+				for (int i = 1; i < number + 1; i++) {
+					System.out.println("player: "+players[i]);
+					if(players[i].getJob().equals("Citizen")){
+						citizens.append(players[i].getNumber()+" ");
+					}
+				}
+				jlciti.setText(citizens.toString());
+				
+				// 分配完职业后该部分变为不可编辑
+				jtfCupidPlayer.setEditable(false);
+				jtfWolfPlayer.setEditable(false);
+				jtfWitchPlayer.setEditable(false);
+				jtfSeerPlayer.setEditable(false);
+				jtfHunterPlayer.setEditable(false);
+				jbtAddCupid.setVisible(false);
+				jbtAddWolf.setVisible(false);
+				jbtAddWitch.setVisible(false);
+				jbtAddSeer.setVisible(false);
+				jbtAddHunter.setVisible(false);
+				
 			}
 		});
-		
-		// 分配村民
-		StringBuilder citizens = new StringBuilder("普通村民是：");
-		for(Player p:players){
-			if(p.getJob().equals("Citizen")){
-				citizens.append(p.getNumber());
-			}
-		}
-		pJob.add(new JLabel(citizens.toString()));
+		pJob.add(jlciti);
 		pJob.setBorder(new TitledBorder("分配职业面板"));
 
 		// 丘比特面板
@@ -126,6 +143,7 @@ public class PerformGame extends JFrame {
 				players[lover2].setLover(players[lover1]);
 			}
 		});
+		pCupid.setSize(300, 500);
 		pCupid.setBorder(new TitledBorder("丘比特面板"));
 
 		// 狼人面板
@@ -144,6 +162,7 @@ public class PerformGame extends JFrame {
 						+ players[Integer.parseInt(jtfToKill.getText())].isAlive());
 			}
 		});
+		pWolfs.setSize(300, 50);
 		pWolfs.setBorder(new TitledBorder("狼人面板"));
 
 		// 女巫面板
@@ -194,6 +213,7 @@ public class PerformGame extends JFrame {
 						+ players[Integer.parseInt(jtfToPoison.getText())].isAlive());
 			}
 		});
+		pWitch.setSize(300, 50);
 		pWitch.setBorder(new TitledBorder("女巫面板"));
 
 		// 预言家面板
@@ -217,7 +237,8 @@ public class PerformGame extends JFrame {
 				}
 			}
 		});
-		pWitch.setBorder(new TitledBorder("预言家面板"));
+		pSeer.setSize(300, 50);
+		pSeer.setBorder(new TitledBorder("预言家面板"));
 		
 		
 
@@ -239,7 +260,8 @@ public class PerformGame extends JFrame {
 				}
 			}
 		});
-		pHunter.setBorder(new TitledBorder("预言家面板"));
+		pHunter.setSize(300, 50);
+		pHunter.setBorder(new TitledBorder("猎人面板"));
 		
 		JTextArea actions = new JTextArea();
 		
@@ -250,6 +272,7 @@ public class PerformGame extends JFrame {
 		add(pWolfs);
 		add(pWitch);
 		add(pSeer);
+		add(pHunter);
 	}
 
 	private void kill(JTextField jtfToKill, Player[] players) {

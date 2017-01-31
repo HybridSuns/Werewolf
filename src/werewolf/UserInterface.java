@@ -25,7 +25,7 @@ public class UserInterface extends JFrame{
 	private void ShowGame(JTextField jtfPNum){
 		PerformGame frame = new PerformGame(jtfPNum);
 		frame.setTitle("狼人杀");
-		frame.setSize(500, 500);
+		frame.setSize(1000, 1000);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
