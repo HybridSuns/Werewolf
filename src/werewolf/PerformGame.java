@@ -11,12 +11,12 @@ public class PerformGame extends JFrame {
 		int number = Integer.parseInt(jtfPNum.getText());
 		Player[] players = new Player[number + 1];
 		for (int i = 1; i < number + 1; i++) {
-			players[i] = new Player(i, true, "Player");
+			players[i] = new Player(i, true, "Citizen");
 			System.out.printf("第%d 玩家加入\n", i);
 		}
 
 		// 分配职业面板
-		JPanel pJob = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
+		JPanel pJob = new JPanel(new GridLayout(6, 3, 5, 5));
 		// 分配丘比特
 		pJob.add(new JLabel("丘比特号码："));
 		JTextField jtfCupidPlayer = new JTextField(8);
@@ -96,6 +96,15 @@ public class PerformGame extends JFrame {
 				}
 			}
 		});
+		
+		// 分配村民
+		StringBuilder citizens = new StringBuilder("普通村民是：");
+		for(Player p:players){
+			if(p.getJob().equals("Citizen")){
+				citizens.append(p.getNumber());
+			}
+		}
+		pJob.add(new JLabel(citizens.toString()));
 		pJob.setBorder(new TitledBorder("分配职业面板"));
 
 		// 丘比特面板
@@ -113,10 +122,8 @@ public class PerformGame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int lover1 = Integer.parseInt(jtfLover1.getText());
 				int lover2 = Integer.parseInt(jtfLover2.getText());
-
 				players[lover1].setLover(players[lover2]);
 				players[lover2].setLover(players[lover1]);
-
 			}
 		});
 		pCupid.setBorder(new TitledBorder("丘比特面板"));
@@ -132,7 +139,7 @@ public class PerformGame extends JFrame {
 
 		jbtKill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WolfKill(jtfToKill, players);
+				kill(jtfToKill, players);
 				System.out.println(Integer.parseInt(jtfToKill.getText()) + "玩家的状态是"
 						+ players[Integer.parseInt(jtfToKill.getText())].isAlive());
 			}
@@ -151,7 +158,7 @@ public class PerformGame extends JFrame {
 					System.out.println(Integer.parseInt(jtfToKill.getText()) + "玩家的状态是"
 							+ players[Integer.parseInt(jtfToKill.getText())].isAlive());
 				} else {
-					WolfKill(jtfToKill, players);
+					kill(jtfToKill, players);
 					System.out.println(Integer.parseInt(jtfToKill.getText()) + "玩家的状态是"
 							+ players[Integer.parseInt(jtfToKill.getText())].isAlive());
 				}
@@ -182,7 +189,7 @@ public class PerformGame extends JFrame {
 		});
 		jbtPoison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				WitchPoison(jtfToPoison, players);
+				kill(jtfToPoison, players);
 				System.out.println(Integer.parseInt(jtfToPoison.getText()) + "玩家的状态是"
 						+ players[Integer.parseInt(jtfToPoison.getText())].isAlive());
 			}
@@ -192,15 +199,15 @@ public class PerformGame extends JFrame {
 		// 预言家面板
 		JPanel pSeer = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
 		pSeer.add(new JLabel("要验的玩家："));
-		JTextField jtfNumToSee = new JTextField(2);
-		pSeer.add(jtfNumToSee);
+		JTextField jtfToSee = new JTextField(2);
+		pSeer.add(jtfToSee);
 		JButton jbtSee = new JButton("验");
 		pSeer.add(jbtSee);
 		JLabel seeRes = new JLabel("");
 		pSeer.add(seeRes);
 		jbtSee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int numToSee = Integer.parseInt(jtfNumToSee.getText());
+				int numToSee = Integer.parseInt(jtfToSee.getText());
 				String seeJob = players[numToSee].getJob();
 				System.out.println(numToSee + "号玩家的职业是：" + seeJob);
 				if (seeJob.equals("Wolf")) {
@@ -210,6 +217,33 @@ public class PerformGame extends JFrame {
 				}
 			}
 		});
+		pWitch.setBorder(new TitledBorder("预言家面板"));
+		
+		
+
+		// 猎人面板
+		JPanel pHunter = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
+		pHunter.add(new JLabel("带走的玩家："));
+		JTextField jtfToShot = new JTextField(2);
+		jtfToShot.setEnabled(false);
+		jtfToShot.setBackground(Color.gray);
+		pHunter.add(jtfToShot);
+		JButton jbtShot = new JButton("开枪！");
+		pHunter.add(jbtShot);
+		
+		jbtShot.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int numKilled = Integer.parseInt(jtfToKill.getText());
+				if(players[numKilled].getJob().equals("Hunter") && !players[numKilled].isAlive()){
+					kill(jtfToShot,players);
+				}
+			}
+		});
+		pHunter.setBorder(new TitledBorder("预言家面板"));
+		
+		JTextArea actions = new JTextArea();
+		
+		
 		setLayout(new GridLayout(3, 1, 5, 5));
 		add(pJob);
 		add(pCupid);
@@ -218,18 +252,11 @@ public class PerformGame extends JFrame {
 		add(pSeer);
 	}
 
-	private void WolfKill(JTextField jtfToKill, Player[] players) {
+	private void kill(JTextField jtfToKill, Player[] players) {
 		int numToKill = Integer.parseInt(jtfToKill.getText());
 		players[numToKill].setAlive(false);
 		if (players[numToKill].isInLove())
 			players[numToKill].getLover().setAlive(false);
-	}
-
-	private void WitchPoison(JTextField jtfToPoison, Player[] players) {
-		int numToPosion = Integer.parseInt(jtfToPoison.getText());
-		players[numToPosion].setAlive(false);
-		if (players[numToPosion].isInLove())
-			players[numToPosion].getLover().setAlive(false);
 	}
 
 	private void WitchSave(JTextField jtfToKill, Player[] players) {
