@@ -1,5 +1,7 @@
 package werewolf;
 
+import java.awt.Color;
+
 /**
  * 玩家对象 number 玩家编号 alive 是死是活
  * 
@@ -13,6 +15,7 @@ public class Player {
 	private Player lover;
 	private boolean isPolice;
 	private String job;
+	private Color color;
 
 	public Player() {
 		this.number = -1;
@@ -21,6 +24,7 @@ public class Player {
 		this.lover=null;
 		this.isPolice=false;
 		this.job="N/A";
+		this.color=Color.black;
 	}
 
 	public Player(int number, boolean alive,String job) {
@@ -30,6 +34,7 @@ public class Player {
 		this.lover=null;
 		this.isPolice=false;
 		this.job=job;
+		this.color=Color.black;
 	}
 
 	/**
@@ -103,5 +108,13 @@ public class Player {
 
 	public void setJob(String job) {
 		this.job = job;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }
