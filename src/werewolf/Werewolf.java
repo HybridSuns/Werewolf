@@ -6,62 +6,62 @@ import java.io.*;
 public class Werewolf {
 	// static ArrayList<Player> array = new ArrayList<Player>();
 
-	public static void main(String[] args) {
-		Hashtable<Integer, Player> table = new Hashtable<>();
-		// 分配职业
-		System.out.println("输入狼人玩家编号：");
-		for (String f : input()) {
-			int number = Integer.parseInt(f);
-			table.put(number, new Wolf(number, true));
-		}
-
-		System.out.println("输入丘比特玩家编号：");
-		int num = Integer.parseInt(input()[0]);
-		Cupid cupid = new Cupid(num, true);
-		table.put(num, cupid);
-
-		System.out.println("输入女巫玩家编号：");
-		num = Integer.parseInt(input()[0]);
-		Witch witch = new Witch(num, true);
-		table.put(num, witch);
-
-		System.out.println("输入与预言家玩家编号：");
-		num = Integer.parseInt(input()[0]);
-		Seer seer = new Seer(num, true);
-		table.put(num, seer);
-
-		System.out.println("输入猎人玩家编号：");
-		num = Integer.parseInt(input()[0]);
-		Hunter hunter = new Hunter(num, true);
-		table.put(num, hunter);
-
-		System.out.println("输入村民玩家编号：");
-		for (String f : input()) {
-			int number = Integer.parseInt(f);
-			table.put(number, new Citizen(number, true));
-		}
-
-		// 第一晚上
-		System.out.println("\n丘比特连人");
-		String[] lovers = input();
-		Player p1 = table.get(Integer.parseInt(lovers[0]));
-		Player p2 = table.get(Integer.parseInt(lovers[1]));
-		cupid.connect(p1, p2);
-
-		String goon = "yes";
-		while (goon.equals("yes")) {
-			System.out.println("当前在场玩家：");
-			for(Map.Entry<Integer, Player> entry:table.entrySet()){
-				if(entry.getValue().isAlive()){
-					System.out.println(entry.getKey()+"号"+entry.getValue().getJob());
-				}
-			}
-			night(witch, seer, hunter, table);
-			System.out.println("继续游戏请输入yes\n\n");
-			goon = input()[0];
-		}
-
-	}
+//	public static void main(String[] args) {
+//		Hashtable<Integer, Player> table = new Hashtable<>();
+//		// 分配职业
+//		System.out.println("输入狼人玩家编号：");
+//		for (String f : input()) {
+//			int number = Integer.parseInt(f);
+//			table.put(number, new Wolf(number, true));
+//		}
+//
+//		System.out.println("输入丘比特玩家编号：");
+//		int num = Integer.parseInt(input()[0]);
+//		Cupid cupid = new Cupid(num, true);
+//		table.put(num, cupid);
+//
+//		System.out.println("输入女巫玩家编号：");
+//		num = Integer.parseInt(input()[0]);
+//		Witch witch = new Witch(num, true);
+//		table.put(num, witch);
+//
+//		System.out.println("输入与预言家玩家编号：");
+//		num = Integer.parseInt(input()[0]);
+//		Seer seer = new Seer(num, true);
+//		table.put(num, seer);
+//
+//		System.out.println("输入猎人玩家编号：");
+//		num = Integer.parseInt(input()[0]);
+//		Hunter hunter = new Hunter(num, true);
+//		table.put(num, hunter);
+//
+//		System.out.println("输入村民玩家编号：");
+//		for (String f : input()) {
+//			int number = Integer.parseInt(f);
+//			table.put(number, new Citizen(number, true));
+//		}
+//
+//		// 第一晚上
+//		System.out.println("\n丘比特连人");
+//		String[] lovers = input();
+//		Player p1 = table.get(Integer.parseInt(lovers[0]));
+//		Player p2 = table.get(Integer.parseInt(lovers[1]));
+//		cupid.connect(p1, p2);
+//
+//		String goon = "yes";
+//		while (goon.equals("yes")) {
+//			System.out.println("当前在场玩家：");
+//			for(Map.Entry<Integer, Player> entry:table.entrySet()){
+//				if(entry.getValue().isAlive()){
+//					System.out.println(entry.getKey()+"号"+entry.getValue().getJob());
+//				}
+//			}
+//			night(witch, seer, hunter, table);
+//			System.out.println("继续游戏请输入yes\n\n");
+//			goon = input()[0];
+//		}
+//
+//	}
 
 	public static void night(Witch witch, Seer seer, Hunter hunter, Hashtable<Integer, Player> table) {
 		ArrayList<Integer> dieList = new ArrayList<>();
